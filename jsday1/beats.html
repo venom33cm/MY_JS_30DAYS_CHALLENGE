@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>chaos sound kit</title>
+  <link rel="stylesheet" href="beats.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">doorbell</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">thunder</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">schoolbell</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">howling</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">booing</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ghostcoming</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">spark</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">car horn</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">reverse</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/sound1.wav"></audio>
+  <audio data-key="83" src="sounds/sound2.wav"></audio>
+  <audio data-key="68" src="sounds/sound3.wav"></audio>
+  <audio data-key="70" src="sounds/sound4.wav"></audio>
+  <audio data-key="71" src="sounds/sound5.wav"></audio>
+  <audio data-key="72" src="sounds/sound6.wav"></audio>
+  <audio data-key="74" src="sounds/sound7.wav"></audio>
+  <audio data-key="75" src="sounds/sound8.wav"></audio>
+  <audio data-key="76" src="sounds/sound9.wav"></audio>
+
+<script>
+
+  const removing=function(e){
+    console.log(e);
+    console.log(this);
+        if(e.propertyName !== 'transform') return;
+        this.classList.remove("playing");
+        
+  }
+window.addEventListener("keydown",(e)=>{
+    // console.log(e);
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    console.log(audio);
+    if(!audio) return;
+    audio.currentTime=0;
+    audio.play();
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    console.log(key)
+    key.classList.add("playing");
+    const keys =document.querySelectorAll('.key')
+    console.log(keys)
+    keys.forEach( key  => key.addEventListener("transitionend",removing));
+})
+
+</script>
+
+
+</body>
+</html>

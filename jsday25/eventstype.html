@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button></button>
+<script>
+    const divs =document.querySelectorAll("div")
+    function display(e){
+        console.log(this.classList.value) //the values you get from this is called event  bubbling 
+        // e.stopPropagation() //stop bubbling or capturing
+    }
+    //but actually when you click an element in body it ripples/captures  down like for instance if i clicked div class two
+    //it starts from body>class one >class two when it finds it. then it starts to bubble by displaying 
+    //two>one>body which is called event capturing and bubbling respectively
+    //so if you want to get in capturing order to be displayed set the options like capture :true in event section
+
+    // document.body.addEventListener('click',display)
+    divs.forEach(div=>div.addEventListener("click",display,{
+        capture:false, //if we put true it displays the elements in capturing order
+        once:true //the event will only work for one time thats it 
+    }))
+
+</script>
+</body>
+</html>

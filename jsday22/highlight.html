@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>👀👀👀Follow Along Nav</title>
+  <link rel="stylesheet" href="highlight.css">
+</head>
+<body>
+
+    <nav>
+      <ul class="menu">
+        <li><a href="">Home</a></li>
+        <li><a href="">Order Status</a></li>
+        <li><a href="">Tweets</a></li>
+        <li><a href="">Read Our History</a></li>
+        <li><a href="">Contact Us</a></li>
+      </ul>
+    </nav>
+
+    <div class="wrapper">
+      <p>Lorem ipsum dolor sit amet, <a href="">consectetur</a> adipisicing elit. Est <a href="">explicabo</a> unde natus necessitatibus esse obcaecati distinctio, aut itaque, qui vitae!</p>
+      <p>Aspernatur sapiente quae sint <a href="">soluta</a> modi, atque praesentium laborum pariatur earum <a href="">quaerat</a> cupiditate consequuntur facilis ullam dignissimos, aperiam quam veniam.</p>
+      <p>Cum ipsam quod, incidunt sit ex <a href="">tempore</a> placeat maxime <a href="">corrupti</a> possimus <a href="">veritatis</a> ipsum fugit recusandae est doloremque? Hic, <a href="">quibusdam</a>, nulla.</p>
+      <p>Esse quibusdam, ad, ducimus cupiditate <a href="">nulla</a>, quae magni odit <a href="">totam</a> ut consequatur eveniet sunt quam provident sapiente dicta neque quod.</p>
+      <p>Aliquam <a href="">dicta</a> sequi culpa fugiat <a href="">consequuntur</a> pariatur optio ad minima, maxime <a href="">odio</a>, distinctio magni impedit tempore enim repellendus <a href="">repudiandae</a> quas!</p>
+    </div>
+
+  <script>
+    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const highlighter =document.querySelectorAll('a') //we are selecting all a tags 
+    const span=document.createElement('span') //creating span tag 
+    span.classList.add('highlight') //adding class to the span tag
+    document.body.append(span)   //appending span to the body 
+
+    const highlighting =function(){
+        const link =this.getBoundingClientRect();//it shows all the things about the element in that tag like its position its height , width
+        console.log(link);
+        const linker={
+            top:link.top+window.scrollY,  //if we scroll down or in sideways  the poition of the previous link will be same 
+            left:link.left+window.scrollX //so highlighting will be done in that same position but due to scrolling the links 
+        }//have changed ,so to adjust the top and left position we have added the scroll height to it,to highlight at
+        //proper and correct position 
+      span.style.width=`${link.width}px`; //here we are styling the span tag which has highlight as class
+      span.style.height=`${link.height}px`; //the span will occupy the height and width of the anchor tag  or links 
+      span.style.transform=`translate(${linker.left}px,${linker.top}px)` //here we are transforming to translate
+      //in the respective position of the links   HURRAY WE ARE DONE CHEERS!!!   also see the css to understand
+    }
+
+    highlighter.forEach(lighter=>lighter.addEventListener('mouseenter',highlighting))
+  </script>
+</body>
+</html>

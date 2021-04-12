@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse Shadow</title>
+</head>
+
+<body>
+
+    <div class="hero">
+        <h1 contenteditable>🔥WOAH!</h1>
+    </div>
+
+    <style>
+        html {
+            color: black;
+            font-family: sans-serif;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+        }
+
+        h1 {
+            text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+            font-size: 100px;
+        }
+    </style>
+
+    <script>
+        const hero = document.querySelector(".hero");  //here we are targetting the parent node hero 
+        const text = hero.querySelector("h1");     //targetting child inside hero i.e h1
+
+        const walk = 200;                //we have set a range of px for text shadow poperty
+        const shadow = function (e) {
+            const { offsetWidth: width, offsetHeight: height } = hero; //here we are destructuring the width/height of hero element.
+            let { offsetX: x, offsetY: y } = e; //destructuring of offsetX and offsetY for e it is same as
+            // console.log(x,y);                                 //let x=e.offsetx   let y=e.offsety
+            // console.log(this,e.target)  //while consoling the x,y value we see we get 0,0 to the topleft of heroelement
+                                            //to avoid that we are seeing this and e.target values if both are different  
+            if (this != e.target) {             //we adjust the x and y value(see the x and y changed values) 
+                x = x + e.target.offsetLeft;    //to be generalised so we wouldnt get x,y as 0,0 and we get the normalised
+                y = y + e.target.offsetTop;     //x,y values 
+            }
+            let walkx = Math.round((x / width * walk) - (walk / 2))  //we are setting the px range between -100 to 100
+            let walky = Math.round((y / height * walk) - (walk / 2)) //we are setting the y px range between -100to100
+            console.log(walkx, walky)                                //(see line 43 we have halved the range value) 
+
+
+          /*in below line we are changing the text shadow values dynamically .and we are displaying different
+          text sahdow value with respect to different colours and different walkx and walky position see below
+          we are done CHEERS!!!*/
+
+
+          text.style.textShadow = 
+            `${walkx}px ${walky}px 0 red,
+             ${walkx*-1}px ${walky}px 0 green ,              
+             ${walky}px ${walkx*-1}px 0 blue,
+             ${walky*-1}px ${walkx}px 0  purple`
+        }
+         //GENERAL TERMS offsetwidth = it tells about width of the css element ,same is for y
+         //offset top=it tells the px values between the top of window to the cursor you are pointing to.same is
+         //offset left or right .CHEERS!!! HAPPY CODING!!!!
+
+        hero.addEventListener("mousemove", shadow)
+    </script>
+</body>
+
+</html>

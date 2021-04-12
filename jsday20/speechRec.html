@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+</head>
+
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+
+  <script>
+
+    //SPEECH RECOGINITION WOW 
+
+    //we first get the sppech from user by the following code . window.webkit is supported for chrome users 
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+
+    const recognition = new SpeechRecognition();//we create recognition of an instance of speech recoginition
+
+    recognition.interimResults = true;//the result generated while we speak need to be true because interim result remains
+    // false by default
+    let p = document.createElement('p'); //creting para element 
+    const words = document.querySelector(".words")  //targetting div class word parent node
+    words.appendChild(p); //we are appending the p child to the parent words 
+
+    recognition.addEventListener("result", e => { //we are adding event to recognition 
+      //very important event RESULT which provides the result of speech in event e ;
+
+      // console.log(e.results) //e.results are form of nodelist we first make it to an array to do map operation
+      const transcript = Array.from(e.results)
+        .map(result => result[0]) //we first get 0th index of resukt 
+        .map(result => result.transcript).join('') //inside the 0th result we get transcript which provides the exact we spoke 
+      console.log(transcript)                      //the join('') converts the array into string 
+     p.textContent = transcript;  //we are assigning the paras textcontent to transcipt .i.e the word we spoke (amazing)
+
+     //the problem now is when we speak new thing after pause the newly generated speech overrides upon previous para 
+
+     if(e.results[0].isFinal) //so when is final becomes true again we create a new para element and append it 
+     {
+       p=document.createElement('p');
+       words.appendChild(p);
+     }
+
+
+    })
+    recognition.addEventListener("end", recognition.start) // after our speech gets end. we add an event END  
+    recognition.start();                        //i.e after ending recognition to be ready to get further speech recognition
+
+
+
+  </script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+
+</html>

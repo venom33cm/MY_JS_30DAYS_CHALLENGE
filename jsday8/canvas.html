@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Canvas</title>
+</head>
+
+<body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+        const canvas = document.querySelector("#draw");
+        const ctx = canvas.getContext('2d'); // targetting canvas tag
+        canvas.width = window.innerWidth;  // initialising canvas width as windows width
+        canvas.height = window.innerHeight; //same for height
+        ctx.strokeStyle = '#BADASS'; //colour of the line or design in canvas
+        ctx.lineJoin = 'round'; // the lines edge or bending part is round
+        ctx.lineCap = 'round'; //the lines end are round 
+        let lastX = 0;
+        let lastY = 0;
+        let hue = 0;
+        ctx.globalCompositeOperation ='multiply'// its a kind of blend modes 
+        let direction = true;
+        let isDrawing = false; //initially asssigning no drawing is done
+        const draw = function (e) {
+            if (!isDrawing) return;
+            console.log(e);
+            ctx.strokeStyle = `hsl(${hue},100%,50%)`;//hsl  a kind of selecting color between red and pink 
+            //which has range from 0 to 360;
+            // ctx.lineWidth = hue;//sets width to hue;
+            ctx.beginPath(); //provide us to start the path
+            ctx.moveTo(lastX, lastY) //starting place from where the line starts
+            ctx.lineTo(e.offsetX, e.offsetY);//ending point of the line
+            ctx.stroke();//to write the things on canvas
+            [lastX, lastY] = [e.offsetX, e.offsetY]; // changing the last x and last y value to the recent offset values 
+
+            hue++;
+
+            if (hue >= 360) {
+                hue = 0;
+            }
+            if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+                direction = !direction;
+            }
+            if (direction) {
+                ctx.lineWidth++;
+            }
+            else {
+                ctx.lineWidth--;
+            }
+    
+      }
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });//here we are assigning value of isdrawing true depending 
+        canvas.addEventListener('mouseup', () => isDrawing = false);//wen to draw
+        canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+    </script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+    </style>
+
+</body>
+
+</html>

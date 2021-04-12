@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Speech Synthesis</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="speech.css">
+</head>
+
+<body>
+
+    <div class="voiceinator">
+
+        <h1>The Voiceinator 5000</h1>
+
+        <select name="voice" id="voices">
+            <option value="">Select A Voice</option>
+        </select>
+
+        <label for="rate">Rate:</label>
+        <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+        <label for="pitch">Pitch:</label>
+
+        <input name="pitch" type="range" min="0" max="2" step="0.1">
+        <textarea name="text">Hello! I love JavaScript 👍</textarea>
+        <button id="stop">Stop!</button>
+        <button id="speak">Speak</button>
+
+    </div>
+
+    <script>
+        //the speechsynthesisutterance is a class which contains all methods and attributes  to be used for speech generation
+        //thats y we have created msg an instance of it  
+        const msg = new SpeechSynthesisUtterance();   
+        let voices = []; //empty array for pushing voices into it
+        const voicesDropdown = document.querySelector('[name="voice"]');
+        const options = document.querySelectorAll('[type="range"], [name="text"]');
+        const speakButton = document.querySelector('#speak');         //targetting the required fields for adding events
+        const stopButton = document.querySelector('#stop');
+
+
+        //the text to be converted into voice/speech is through text attribute in speechsynthesis utterance
+        msg.text = document.querySelector('[name="text"]').value;//msg.text takes value from text area
+
+        const populatevoice = function () {
+            voices = this.getVoices(); //on page load we can get all the voices throgh getvoices which is already within speechsunthesisutterance
+            console.log(voices);//array of voice is displayed
+
+            voicesDropdown.innerHTML = voices //we are adding the voices in the dropdown for option in select tag 
+                .filter(voice=>voice.lang.includes("en")) //filtering out the voices which includes "en" in lang attribute 
+                .map((voice) => {
+                    return `<option value="${voice.name}">${voice.name} (${voice.lang})</option>` 
+                    //we are adding the options tag with the generated voices array and adding to the html dynamically
+                }).join('') //join ignores ',' and makes into a string 
+
+        }
+
+        const setvoice=function(){  //in this function we are changing the voice by getting the changed voice option from dropdown 
+            console.log(this.value)   
+            msg.voice =voices.find(voice=>(voice.name===this.value))//msg.voice attribute in speechsynthesisutterance
+            //allows you to change the voice, we get the voices from the options in that select tag whose voice.name is same 
+            //as that of this(i.e currently selected).value
+
+            toggle();//this function allows you to stop the  currently playing voice and switch on playing the another voice
+            //with different voices
+        }
+
+        function toggle(startagain=true){ //by default start again remains true
+            speechSynthesis.cancel(); //cuts off the currently playing voice, cancel() comes under speechsynthesis not speechsynthesisutterance and also same with speak() 
+            if(startagain){
+            speechSynthesis.speak(msg) //changes the voice which is newly selected and the msg is spoken in different voice now
+            }
+        }
+        function voicechange(){  //voice change function changes the rate and pitch of the voice  
+            console.log(this.name, this.value);
+            msg[this.name]=this.value; //here we set the msg.pitch or msg.rate attribute .after it is done 
+            toggle();                  //we call the toggle function to play the voice with different pitch and rate
+        }
+
+        voicesDropdown.addEventListener('change',setvoice);
+        speechSynthesis.addEventListener("voiceschanged", populatevoice)
+        options.forEach(option=>option.addEventListener("change",voicechange))
+        speakButton.addEventListener('click',toggle);                //here we are adding events 
+        stopButton.addEventListener('click',()=>toggle(false)) //here start again is set as false to just stop the current voice played
+        //hurray we are done
+
+    </script>
+
+</body>
+
+</html>
